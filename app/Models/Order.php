@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -12,9 +13,17 @@ class Order extends Model
     /**
      * Get the user owner of the order.
      */
-    public function user(): HasOne
+    public function purchase(): HasOne
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(Purchase::class);
+    }
+
+    /**
+     * Get the user owner of the order.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
