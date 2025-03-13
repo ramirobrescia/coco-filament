@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -22,9 +23,11 @@ class Node extends Model
     /**
      * Get the group of consumers of this node.
      */
-    public function consumers(): HasMany
+    public function consumers(): BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->as('joined')
+            ->withTimestamps();
     }
 
     /**
