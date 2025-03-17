@@ -42,7 +42,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             // Items
 
-            $table->integer('packages', 4);
+            $table->integer('packages');
             // In Kg
             $table->decimal('weight', 8, 3);
             $table->decimal('total', 10, 2);
