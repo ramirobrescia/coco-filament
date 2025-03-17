@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NodeIntiveEmail extends Mailable
+class NodeInvitationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 

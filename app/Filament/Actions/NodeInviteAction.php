@@ -3,15 +3,12 @@
 namespace App\Filament\Actions;
 
 use App\InvitationState;
-use App\Mail\NodeIntiveEmail;
+use App\Mail\NodeInvitationEmail;
 use App\Models\Invitation;
-use App\Models\Node;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class NodeInviteAction extends Action
@@ -29,9 +26,9 @@ class NodeInviteAction extends Action
         $this->label('Invitar');
 
         $this->form([
-			Repeater::make('consumers')
-				->label('Consumidores')
-				->schema([
+            Repeater::make('consumers')
+                ->label('Consumidores')
+                ->schema([
                     Grid::make()
                         ->columns(2)
                         ->schema([
@@ -45,12 +42,12 @@ class NodeInviteAction extends Action
                                 ->email()
                                 ->required()
                         ])
-				])
-		]);
+                ])
+        ]);
 
         $this->action(function (array $data, Action $action) {
             $node = $action->record;
-            
+
             $invitation = Invitation::create([
                 'consumers' => $data['consumers'],
                 'node_id' => $node->id,
@@ -60,7 +57,7 @@ class NodeInviteAction extends Action
             // Create emails
             $emails = [];
             foreach ($invitation->consumers as $consumer) {
-                $email = new NodeIntiveEmail($invitation, $consumer);
+                $email = new NodeInvitationEmail($invitation, $consumer);
 
                 array_push($emails, $email);
             }
@@ -68,7 +65,7 @@ class NodeInviteAction extends Action
             // Send invite
             foreach ($emails as $email) {
                 $sendedEmail = Mail::send($email);
-    
+
                 if ($sendedEmail)
                     $invitation->state = InvitationState::SENDED;
                 else
@@ -76,7 +73,6 @@ class NodeInviteAction extends Action
 
                 $invitation->save();
             }
-
         });
 
         // $this->action(function (): void {
@@ -112,5 +108,4 @@ class NodeInviteAction extends Action
         //     $this->success();
         // });
     }
-
 }
