@@ -26,10 +26,11 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('nodes_users', function (Blueprint $table) {
+        Schema::create('node_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Node::class);
+            $table->foreignIdFor(Node::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class);
+            $table->unique(['node_id', 'user_id']);
             $table->timestamps();
         });
     }
