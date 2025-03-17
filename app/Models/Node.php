@@ -12,6 +12,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Node extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name'
+    ];
+
     /**
      * Get the user that create the node.
      */
@@ -25,8 +35,7 @@ class Node extends Model
      */
     public function consumers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
-            ->as('joined')
+        return $this->belongsToMany(User::class, 'node_user')
             ->withTimestamps();
     }
 
@@ -37,7 +46,7 @@ class Node extends Model
     {
         return $this->hasMany(Provider::class);
     }
-    
+
     /**
      * Get the purchases of the node.
      */
