@@ -16,6 +16,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Count;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Table;
@@ -67,6 +68,9 @@ class NodeResource extends Resource
                     ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Creador'),
+                TextColumn::make('consumers_count')
+                    ->label('Consumidores')
+                    ->counts('consumers'),
             ])
             ->filters([
                 //
