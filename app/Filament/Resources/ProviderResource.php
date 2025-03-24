@@ -3,15 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProviderResource\Pages;
-use App\Filament\Resources\ProviderResource\RelationManagers;
 use App\Models\Provider;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProviderResource extends Resource
 {
@@ -19,6 +20,8 @@ class ProviderResource extends Resource
 
     protected static ?string $modelLabel = 'Proveedor';
     protected static ?string $pluralModelLabel = 'Proveedores';
+
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
 
@@ -66,22 +69,27 @@ class ProviderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Nombre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('phone')
                     ->label('Teléfono')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label('Email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('contact')
+                TextColumn::make('contact')
                     ->label('Contacto')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('node.name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('node.name')
                     ->label('Nodo')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('products_count')
+                    ->label('Productos')
+                    ->counts('products'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('node')
@@ -92,6 +100,14 @@ class ProviderResource extends Resource
                     ->preload(),
             ])
             ->actions([
+                Tables\Actions\Action::make('products')
+                    ->label('Productos')
+                    ->link()
+                    ->url(function (Tables\Actions\Action $action) {
+                        // ...
+                        // dd($arguments, $action);
+                        return 'providers/'.$action->getRecord()->id.'/products';
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -108,12 +124,21 @@ class ProviderResource extends Resource
         ];
     }
 
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            // ...
+            Pages\ManageProviderProducts::class,
+        ]);
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListProviders::route('/'),
             'create' => Pages\CreateProvider::route('/create'),
             'edit' => Pages\EditProvider::route('/{record}/edit'),
+            'products' => Pages\ManageProviderProducts::route('/{record}/products'),
         ];
     }
 }
