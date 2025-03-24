@@ -76,8 +76,8 @@ class NodeResource extends Resource
                 //
             ])
             ->actions([
+                NodeInviteAction::make(),
                 Tables\Actions\EditAction::make(),
-                NodeInviteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
