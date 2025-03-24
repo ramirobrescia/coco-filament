@@ -72,7 +72,7 @@ class ManageProviderProducts extends ManageRelatedRecords
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('price')
-                    ->numeric(decimalPlaces: 2),
+                    ->numeric(locale: 'es_AR', decimalPlaces: 2),
             ])
             ->filters([
                 // Tables\Filters\TrashedFilter::make()
