@@ -19,6 +19,7 @@ use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -30,6 +31,21 @@ class ManageProviderProducts extends ManageRelatedRecords
     protected static string $relationship = 'products';
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
+
+    public function getTitle(): string | Htmlable
+    {
+        return $this->record->name;
+    }
+    
+    public function getHeading(): string | Htmlable
+    {
+        return 'Productos';
+    }
+    
+    public function getSubHeading(): string | Htmlable
+    {
+        return 'Listado de productos de ' . $this->record->name;
+    }
 
     public static function getNavigationLabel(): string
     {
