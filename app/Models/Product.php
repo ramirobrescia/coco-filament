@@ -15,7 +15,7 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'weight', 'provider_id'
+        'name', 'weight', 'price',
     ];
 
     /**
@@ -24,21 +24,5 @@ class Product extends Model
     public function provider(): HasOne
     {
         return $this->hasOne(Provider::class);
-    }
-
-    /**
-     * Get the lastest price.
-     */
-    public function price(): HasOne
-    {
-        return $this->hasOne(ProductPrice::class)->latestOfMany();
-    }
-
-    /**
-     * Get the price history.
-     */
-    public function prices(): HasMany
-    {
-        return $this->hasMany(ProductPrice::class);
     }
 }

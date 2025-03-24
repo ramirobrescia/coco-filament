@@ -17,20 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->decimal('weight', 8, 3);
+            $table->decimal('price', 10, 2);
 
             $table->foreignIdFor(Provider::class)
-                ->constrained()
-                ->onDelete('cascade');
-
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('product_prices', function (Blueprint $table) {
-            $table->id();
-            $table->decimal('amount', 10, 2);
-
-            $table->foreignIdFor(Product::class)
                 ->constrained()
                 ->onDelete('cascade');
 
