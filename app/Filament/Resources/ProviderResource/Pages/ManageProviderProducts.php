@@ -3,8 +3,16 @@
 namespace App\Filament\Resources\ProviderResource\Pages;
 
 use App\Filament\Resources\ProviderResource;
+use App\Models\Product;
+use App\Models\ProductPrice;
 use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SubNavigationPosition;
@@ -12,6 +20,7 @@ use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ManageProviderProducts extends ManageRelatedRecords
@@ -37,11 +46,22 @@ class ManageProviderProducts extends ManageRelatedRecords
                     ->maxLength(100),
                 TextInput::make('weight')
                     ->label('Peso')
-                    ->helperText('Expresado en Kg. Ej: 0.025 Kg = 25 g')
+                    ->prefix('Kg')
+                    ->suffix('0,001')
+                    ->helperText('Ej: 0.025 Kg = 25 g')
                     ->numeric()
                     ->inputMode('decimal')
                     ->required()
                     ->minValue(0.001),
+                TextInput::make('price')
+                    ->label('Precio')
+                    ->required()
+                    ->prefix('$')
+                    ->suffix('0,00')
+                    ->required()
+                    ->numeric()
+                    ->inputMode('decimal')
+                    ->minValue(0.01),
             ]);
     }
 
@@ -51,6 +71,8 @@ class ManageProviderProducts extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('price')
+                    ->numeric(decimalPlaces: 2),
             ])
             ->filters([
                 // Tables\Filters\TrashedFilter::make()
