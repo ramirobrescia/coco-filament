@@ -86,8 +86,12 @@ class ManageProviderProducts extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nombre')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('price')
+                    ->label('Precio')
                     ->numeric(locale: 'es_AR', decimalPlaces: 2),
             ])
             ->filters([
