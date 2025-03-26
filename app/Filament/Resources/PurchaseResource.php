@@ -100,6 +100,7 @@ class PurchaseResource extends Resource
                 TextColumn::make('state')
                     ->label('Estado')
                     ->searchable()
+                    ->badge()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
