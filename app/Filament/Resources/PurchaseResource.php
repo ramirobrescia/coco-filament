@@ -95,7 +95,7 @@ class PurchaseResource extends Resource
                     ->sortable(),
                 TextColumn::make('deadline')
                     ->label('Cierre')
-                    ->date()
+                    ->date('d/m/Y')
                     ->sortable(),
                 TextColumn::make('state')
                     ->label('Estado')
