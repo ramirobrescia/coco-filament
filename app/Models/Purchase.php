@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\PurchaseState;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -12,6 +13,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Purchase extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'node_id', 'provider_id', 'state', 'deadline',
+    ];
+
     /**
      * The model's default values for attributes.
      * @var array
@@ -23,17 +34,17 @@ class Purchase extends Model
     /**
      * Get the Node where the Purchase belongs.
      */
-    public function node(): HasOne
+    public function node(): BelongsTo
     {
-        return $this->hasOne(Node::class);
+        return $this->belongsTo(Node::class);
     }
 
     /**
      * Get the provider of the purchase.
      */
-    public function provider(): HasOne
+    public function provider(): BelongsTo
     {
-        return $this->hasOne(Provider::class);
+        return $this->belongsTo(Provider::class);
     }
 
     /**
@@ -42,5 +53,17 @@ class Purchase extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'state' => PurchaseState::class,
+        ];
     }
 }
