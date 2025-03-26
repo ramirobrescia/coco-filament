@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->string('state', 30);
             $table->date('deadline');
-
+            
             $table->foreignIdFor(Node::class)
                 ->constrained()
                 ->onDelete('cascade');
@@ -40,12 +40,11 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignIdFor(User::class);
-            // Items
 
-            $table->integer('packages');
+            $table->integer('packages')->nullable();
             // In Kg
-            $table->decimal('weight', 8, 3);
-            $table->decimal('total', 10, 2);
+            $table->decimal('weight', 8, 3)->nullable();
+            $table->decimal('total', 10, 2)->nullable();
             
             $table->timestamps();
             $table->softDeletes();
