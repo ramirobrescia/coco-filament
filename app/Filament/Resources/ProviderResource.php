@@ -25,20 +25,6 @@ class ProviderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->whereHas('node', function (Builder $query) {
-                $query
-                    // Current user as Node creator
-                    ->where('user_id', '=', auth()->id())
-                    // Or current user as Node consumer
-                    ->orWhereHas('consumers', function (Builder $query) {
-                        $query->where('user_id', '=', auth()->id());
-                    });
-            });
-    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -114,7 +100,20 @@ class ProviderResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => 
+                // $query->withoutGlobalScopes()
+                // Current user as Node creator
+                $query->whereHas('node', function (Builder $query) {
+                    $query
+                        // Current user as Node creator
+                        ->where('user_id', '=', auth()->id())
+                        // Or current user as Node consumer
+                        ->orWhereHas('consumers', function (Builder $query) {
+                            $query->where('user_id', '=', auth()->id());
+                        });
+                })
+            );
     }
 
     public static function getRelations(): array
