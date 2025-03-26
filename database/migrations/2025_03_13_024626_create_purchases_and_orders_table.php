@@ -51,7 +51,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('orders_items', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(Product::class);
