@@ -29,20 +29,23 @@ class NodeResource extends Resource
 {
     protected static ?string $model = Node::class;
 
-    protected static ?string $modelLabel = 'Nodo';
-
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    public static function getModelLabel(): string
+    {
+        return __('Node');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Nombre')
+                    ->translateLabel()
                     ->required()
                     ->maxLength(50),
-                Placeholder::make('creador')
-                    ->label('Creador')
+                Placeholder::make('creator')
+                    ->translateLabel()
                     ->content(auth()->user()->name),
             ]);
     }
@@ -52,14 +55,17 @@ class NodeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nombre')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('user.name')
-                    ->label('Creador'),
+                    ->label(__('Creator')),
                 TextColumn::make('consumers_count')
-                    ->label('Consumidores')
+                    ->translateLabel()
                     ->counts('consumers'),
+                TextColumn::make('providers_count')
+                    ->translateLabel()
+                    ->counts('providers'),
             ])
             ->filters([
                 //
@@ -82,6 +88,7 @@ class NodeResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+
     }
 
     public static function getRelations(): array
