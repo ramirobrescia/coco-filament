@@ -33,17 +33,6 @@ class NodeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            // Current user as Node creator
-            ->where('user_id', '=', auth()->id())
-            // Current user as Node consumer
-            ->orWhereHas('consumers', function (Builder $query) {
-                $query->where('user_id', '=', auth()->id());
-            });
-    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -79,6 +68,15 @@ class NodeResource extends Resource
                 NodeInviteAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
+            ->modifyQueryUsing(fn (Builder $query) => 
+                $query
+                    // Current user as Node creator
+                    ->where('user_id', '=', auth()->id())
+                    // Current user as Node consumer
+                    ->orWhereHas('consumers', function (Builder $query) {
+                        $query->where('user_id', '=', auth()->id());
+                    })
+            )
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
