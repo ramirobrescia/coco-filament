@@ -1,0 +1,28 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* Repeater compact */
+.fi-fo-repeater {
+	@apply border-0;
+}
+
+.fi-fo-repeater > ul > div.grid {
+	@apply gap-3 py-3;
+}
+
+.fi-fo-repeater-item {
+	@apply flex divide-none ring-0 dark:bg-transparent;
+}
+
+.fi-fo-repeater-item-header {
+	@apply order-last p-3;
+}
+
+.fi-fo-repeater-item-content {
+	@apply px-3 py-0;
+}
+
+.fi-fo-repeater-item-content > div.grid {
+	@apply gap-3;
+}
