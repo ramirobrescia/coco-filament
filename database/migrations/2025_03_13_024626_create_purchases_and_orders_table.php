@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Node;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Provider;
 use App\Models\Purchase;
@@ -53,6 +54,7 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class);
             $table->decimal('quantity', 7, 2);
             $table->decimal('price', 7, 2);
