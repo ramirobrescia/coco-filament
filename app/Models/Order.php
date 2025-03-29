@@ -11,11 +11,20 @@ class Order extends Model
 {
     
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+    ];
+
+    /**
      * Get the user owner of the order.
      */
-    public function purchase(): HasOne
+    public function purchase(): BelongsTo
     {
-        return $this->hasOne(Purchase::class);
+        return $this->belongsTo(Purchase::class);
     }
 
     /**

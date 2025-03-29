@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrderItem extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'product_id', 'quantity', 'price',
+    ];
+
     /**
      * Get the order.
      */

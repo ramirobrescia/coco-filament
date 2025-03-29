@@ -8,9 +8,16 @@
     "Deadline": "Cierre",
     "Name": "Nombre",
     "Node": "Nodo",
+    "Order": "Pedido",
+    "Orders": "Pedidos",
     "Phone": "Teléfono",
+    "Price": "Precio",
+    "Product": "Producto",
+    "Products": "Productos",
     "Provider": "Proveedor",
     "Providers": "Proveedores",
     "Providers count": "Proveedores",
-    "State": "Estado"
+    "Quantity": "Cantidad",
+    "State": "Estado",
+    "User name": "Consumidor"
 }
