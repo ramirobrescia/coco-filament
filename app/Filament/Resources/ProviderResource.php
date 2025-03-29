@@ -46,8 +46,18 @@ class ProviderResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('node_id')
                     ->label('Nodo')
-                    ->relationship('node', 'name')
-                    ->required(),
+                    ->relationship('node', 'name', function (Builder $query){
+                        $userId = auth()->id();
+                        $query
+                            // Current user as Node creator
+                            ->where('user_id', '=', $userId)
+                            // Current user as Node consumer
+                            ->orWhereHas('consumers', function (Builder $query) use ($userId) {
+                                $query->where('user_id', '=', $userId);
+                            });
+                    })
+                    ->required()
+                    ->native(false),
             ]);
     }
 
