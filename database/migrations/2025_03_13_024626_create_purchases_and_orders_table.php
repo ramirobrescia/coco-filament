@@ -42,20 +42,22 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->foreignIdFor(User::class);
 
-            $table->integer('packages')->nullable();
+            $table->integer('packages');
             // In Kg
-            $table->decimal('weight', 8, 3)->nullable();
-            $table->decimal('total', 10, 2)->nullable();
+            $table->decimal('weight', 8, 3);
+            $table->decimal('total', 10, 2);
             
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('order_item', function (Blueprint $table) {
             $table->id();
 
             $table->foreignIdFor(Order::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Product::class);
+            $table->decimal('unit_price', 7, 2);
+            $table->decimal('unit_weight', 8, 3);
             $table->decimal('quantity', 7, 2);
             $table->decimal('price', 7, 2);
 

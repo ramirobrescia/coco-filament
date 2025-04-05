@@ -4,10 +4,6 @@ namespace App\Filament\Resources\PurchaseResource\Pages;
 
 use App\Filament\Resources\PurchaseResource;
 use App\Models\Product;
-use App\Models\User;
-use Filament\Actions;
-use Filament\Forms;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
@@ -20,11 +16,8 @@ use Filament\Forms\Set;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\HtmlString;
 
@@ -68,24 +61,13 @@ class ManagePurchaseOrders extends ManageRelatedRecords
         return new HtmlString($subHeading);
     }
 
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function handleRecordCreation(array $data): Model
-    {
-        $record = new ($this->getModel())($data);
-
-        dd($record);
-
-        return $record;
-    }
-
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('user_id')
-                    ->translateLabel()
+                    ->label(__('Consumer'))
+                    ->columns(6)
                     ->relationship('user', 'name', function (Builder $query){
                         $node = $this->record->node()->get()->first();
                         
@@ -97,8 +79,11 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                     ->default(auth()->id())
                     ->preload()
                     ->searchable(),
-                Repeater::make('item')
-                    ->relationship('items')
+                Placeholder::make('provider')
+                    ->translateLabel()
+                    ->content($this->record->provider()->get()->first()->name),
+                Repeater::make('items')
+                    ->relationship()
                     ->columns(12)
                     ->columnSpanFull()
                     ->schema([
@@ -112,18 +97,20 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                             ->live()
                             ->searchable()
                             ->columnSpan(6)
-                            ->afterStateUpdated(function ($state, Set $set) {
+                            ->afterStateUpdated(function ($state, Get $get, Set $set) {
                                 if (!is_null($state)){
                                     $product = Product::where('id', $state)->get()->first();
                                     
                                     $set('unit_price', $product->price);
+                                    $set('unit_weight', $product->weight);
                                     $set('quantity', 1);
                                     $set('price', $product->price);
+
+                                    $this->updateTotals($get, $set);
                                 }
                             }),
-                        TextInput::make('unit_price')
-                            ->hidden()
-                            ->default(0),
+                        Hidden::make('unit_price'),
+                        Hidden::make('unit_weight'),
                         TextInput::make('quantity')
                             ->hiddenLabel()
                             ->placeholder(__('Quantity'))
@@ -134,17 +121,61 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                             ->afterStateUpdated(function ($state, Get $get, Set $set) {
                                 if (!is_null($state)){
                                     $set('price', $get('unit_price') * $state);
+
+                                    $this->updateTotals($get, $set);
                                 }
                             }),
                         TextInput::make('price')
                             ->hiddenLabel()
                             ->placeholder(__('Price'))
                             ->numeric()
-                            ->required()
+                            ->readOnly()
                             ->columnSpan(3),
                     ])
                     ->minItems(1),
+                Grid::make()
+                    ->columnSpanFull()
+                    ->columns(12)
+                    ->schema([
+                        TextInput::make('packages')
+                            ->translateLabel()
+                            ->default(0)
+                            ->readOnly()
+                            ->columnSpan(2),
+                        TextInput::make('weight')
+                            ->translateLabel()
+                            ->default(0.0)
+                            ->readOnly()
+                            ->columnSpan(4)
+                            ->prefix('Kg'),
+                        TextInput::make('total')
+                            ->translateLabel()
+                            ->default(0.0)
+                            ->readOnly()
+                            ->columnSpan(6)
+                            ->prefix('$'),
+                    ])
             ]);
+    }
+
+    private function updateTotals(Get $get, Set $set){
+        $items = $get('../../items');
+        
+        $packages = 0;
+        $totalWeight = 0.0;
+        $total = 0.0;
+
+        foreach ($items as $item) {
+            if(!is_null($item['unit_weight']))
+                $totalWeight += $item['unit_weight'] * $item['quantity'];
+            
+            $packages += $item['quantity'];
+            $total += $item['price'];
+        }
+
+        $set('../../packages', $packages);
+        $set('../../weight', $totalWeight);
+        $set('../../total', $total);
     }
 
     public function table(Table $table): Table

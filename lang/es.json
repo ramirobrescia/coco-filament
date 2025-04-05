@@ -10,6 +10,7 @@
     "Node": "Nodo",
     "Order": "Pedido",
     "Orders": "Pedidos",
+    "Packages": "Bultos",
     "Phone": "Teléfono",
     "Price": "Precio",
     "Product": "Producto",
@@ -19,5 +20,6 @@
     "Providers count": "Proveedores",
     "Quantity": "Cantidad",
     "State": "Estado",
-    "User name": "Consumidor"
+    "User name": "Consumidor",
+    "Weight": "Peso"
 }
