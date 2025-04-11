@@ -23,22 +23,22 @@ class NodeInviteAction extends Action
     {
         parent::setUp();
 
-        $this->label('Invitar');
+        $this->label(__('Invite'));
 
         $this->form([
             Repeater::make('consumers')
-                ->label('Consumidores')
+                ->translateLabel()
                 ->schema([
                     Grid::make()
                         ->columns(2)
                         ->schema([
                             TextInput::make('name')
-                                ->label('Nombre')
+                                ->translateLabel()
                                 ->alpha()
                                 ->maxLength(50)
                                 ->required(),
                             TextInput::make('email')
-                                ->label('Email')
+                                ->translateLabel()
                                 ->email()
                                 ->required()
                         ])
@@ -74,38 +74,5 @@ class NodeInviteAction extends Action
                 $invitation->save();
             }
         });
-
-        // $this->action(function (): void {
-        //     $this->process(function (array $data, Model $record, Table $table) {
-        //         $relationship = $table->getRelationship();
-
-        //         $translatableContentDriver = $table->makeTranslatableContentDriver();
-
-        //         if ($relationship instanceof BelongsToMany) {
-        //             $pivot = $record->{$relationship->getPivotAccessor()};
-
-        //             $pivotColumns = $relationship->getPivotColumns();
-        //             $pivotData = Arr::only($data, $pivotColumns);
-
-        //             if (count($pivotColumns)) {
-        //                 if ($translatableContentDriver) {
-        //                     $translatableContentDriver->updateRecord($pivot, $pivotData);
-        //                 } else {
-        //                     $pivot->update($pivotData);
-        //                 }
-        //             }
-
-        //             $data = Arr::except($data, $pivotColumns);
-        //         }
-
-        //         if ($translatableContentDriver) {
-        //             $translatableContentDriver->updateRecord($record, $data);
-        //         } else {
-        //             $record->update($data);
-        //         }
-        //     });
-
-        //     $this->success();
-        // });
     }
 }
