@@ -27,4 +27,22 @@ return [
             'description' => 'El compra fue recibida por el nodo.'
         ],
     ],
+    'report' => [
+        'provider' => [
+            'action' => [
+                'label' => 'Pedido al proveedor',
+                'description' => 'Resumen de la compra para enviar al proveedor.'
+            ],
+            'failure' => [
+                'selection' => [
+                    'title' => 'Pedido al proveedor',
+                    'body' => 'Debe seleccionar solo una compra.'
+                ]    
+            ]
+        ],
+        'consumers' => [
+            'label' => 'Pedidos de consumidores',
+            'description' => 'El pedido proveedor y el de cada consumidor'
+        ],
+    ]
 ];

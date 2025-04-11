@@ -56,6 +56,30 @@ class Purchase extends Model
     }
 
     /**
+     * Get the total amount of the purchase.
+     */
+    public function total(): float
+    {
+        return $this->orders()->sum('total');
+    }
+
+    /**
+     * Get the total weight of the purchase.
+     */
+    public function weight(): float
+    {
+        return $this->orders()->sum('weight');
+    }
+
+    /**
+     * Get the total packages of the purchase.
+     */
+    public function packages(): float
+    {
+        return $this->orders()->sum('packages');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
