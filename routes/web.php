@@ -14,6 +14,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/report/purchase/{id}', [PurchaseReportController::class, 'show']);
+
+
 // Reports
-Route::get('/report/purchase/{id}', [PurchaseReportController::class, 'show'])
-    ->name('report.purchase');
+Route::controller(PurchaseReportController::class)
+    ->prefix('report')->group(function () {
+        
+        Route::get('/purchase/{id}', 'show')->name('report.purchase');
+        Route::get('/purchase/{id}/orders', 'orders')->name('report.purchase.orders');
+
+    });

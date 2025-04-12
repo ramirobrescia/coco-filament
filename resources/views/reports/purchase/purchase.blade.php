@@ -28,14 +28,18 @@
 								</tr>
 						</thead>
 						<tbody id="lista-productos">
-							@foreach ($items as $item)
+							@forelse ($items as $item)
 							<tr>
 								<td>{{ $item['name'] }}</td>
 								<td class="text-right">{{ $item['quantity'] }}</td>
 								<td class="text-right">{{ $item['price'] }}</td>
 								<td class="text-right">{{ $item['total'] }}</td>
 							</tr>
-							@endforeach
+							@empty
+							<tr>
+								<td colspan="4" style="text-align: center;">No hay pedidos realizados</td>
+							</tr>
+							@endforelse
 						</tbody>
 						<tfoot>
 							<tr class="border-t border-gray-300">

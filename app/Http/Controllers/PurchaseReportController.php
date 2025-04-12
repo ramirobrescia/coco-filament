@@ -10,16 +10,9 @@ use Illuminate\Support\Str;
 
 class PurchaseReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        
-    }
 
     /**
-     * Display the specified resource.
+     * Generates .
      */
     public function show(string $id)
     {
@@ -27,6 +20,7 @@ class PurchaseReportController extends Controller
             ->where('id', $id)
             ->firstOrFail();
 
+        // Product summary from orders
         $purchaseItems = $purchase->orders()->get()
             ->map(function (Order $order){
                 return $order->items()->with('product')->get();
@@ -50,8 +44,6 @@ class PurchaseReportController extends Controller
                 return $product;
             });
 
-        // dd($purchase);
-
         $data = [
             'purchase' => $purchase,
             'contact' => [
@@ -66,7 +58,36 @@ class PurchaseReportController extends Controller
             ->replaceArray('?', [$purchase->provider->name, __('Purchase'), $purchase->node->name, date('Y-m-d')])
             ->slug();
         
-        $pdf = Pdf::loadView('reports.provider.purchase', $data);
+        $pdf = Pdf::loadView('reports.purchase.purchase', $data);
+        
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Generates a PDF with all orders of a Purchase.
+     */
+    public function orders(string $id)
+    {
+        $purchase = Purchase::with(['provider', 'orders',  'node'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        // dd($purchase->orders->first()->items->first()->product);
+
+        $data = [
+            'purchase' => $purchase,
+            'contact' => [
+                'name' => 'Juan Perez',
+                'phone' => '11 36258524'
+            ],
+        ];
+
+        // <provider> purchase <node> <date>
+        $filename = Str::of('? ? ? ?')
+            ->replaceArray('?', [$purchase->provider->name, __('Purchase'), $purchase->node->name, date('Y-m-d')])
+            ->slug();
+        
+        $pdf = Pdf::loadView('reports.purchase.orders', $data);
         
         return $pdf->download($filename);
     }
