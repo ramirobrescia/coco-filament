@@ -19,6 +19,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\HtmlString;
 
 class ManagePurchaseOrders extends ManageRelatedRecords
@@ -183,8 +184,21 @@ class ManagePurchaseOrders extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('user.name')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label(__('Consumer'))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('packages')
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('weight')
+                    ->translateLabel()
+                    ->suffix(' Kg')
+                    ->alignEnd(),
+                Tables\Columns\TextColumn::make('total')
+                    ->numeric(locale: App::currentLocale(), decimalPlaces: 2)
+                    ->sortable()
+                    ->alignEnd(),
             ])
+            ->defaultSort('user.name')
             ->filters([
                 //
             ])
@@ -192,9 +206,11 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->iconButton()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
