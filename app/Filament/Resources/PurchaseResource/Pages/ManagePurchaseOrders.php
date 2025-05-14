@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PurchaseResource\Pages;
 
 use App\Filament\Resources\PurchaseResource;
 use App\Models\Product;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -87,6 +89,60 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                     ->relationship()
                     ->columns(12)
                     ->columnSpanFull()
+                    ->hintAction(
+                        Action::make('newProduct')
+                            ->translateLabel()
+                            ->icon('heroicon-o-plus')
+                            ->form([
+                                Grid::make('Datos')
+                                    ->columns(6)
+                                    ->schema([
+                                        TextInput::make('name')
+                                            ->translateLabel()
+                                            ->required()
+                                            ->columnSpanFull()
+                                            ->maxLength(100),
+                                        TextInput::make('weight')
+                                            ->translateLabel()
+                                            ->prefix('Kg')
+                                            ->suffix('0,001')
+                                            ->helperText('Ej: 0.025 Kg = 25 g')
+                                            ->numeric()
+                                            ->inputMode('decimal')
+                                            ->required()
+                                            ->columnSpan(3)
+                                            ->minValue(0.001),
+                                        TextInput::make('price')
+                                            ->translateLabel()
+                                            ->required()
+                                            ->prefix('$')
+                                            ->suffix('0,00')
+                                            ->required()
+                                            ->columnSpan(3)
+                                            ->numeric()
+                                            ->inputMode('decimal')
+                                            ->minValue(0.01),
+                                    ]),
+                            ])
+                            ->action(function (array $data) use ($form): void {
+                                $order = $form->getRecord();
+                                $data['provider_id'] = $order->purchase()->first()->provider_id;
+
+                                $newProduct = Product::create($data);
+
+                                if (is_null($newProduct)){
+                                    Notification::make()
+                                        ->title('No se pudo crear el producto')
+                                        ->danger()
+                                        ->send();
+                                } else {
+                                    Notification::make()
+                                        ->title('El producto fue creado')
+                                        ->success()
+                                        ->send();
+                                }
+                            })
+                    )
                     ->schema([
                         Select::make('product_id')
                             ->hiddenLabel()
