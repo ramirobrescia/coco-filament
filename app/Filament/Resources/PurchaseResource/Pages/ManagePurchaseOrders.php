@@ -143,6 +143,11 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                                 }
                             })
                     )
+                    ->deleteAction(function (Action $action){
+                        $action->after(function (Get $get, Set $set) {
+                            $this->updateTotals($get, $set, '');
+                        });
+                    })
                     ->schema([
                         Select::make('product_id')
                             ->hiddenLabel()
@@ -215,8 +220,8 @@ class ManagePurchaseOrders extends ManageRelatedRecords
             ]);
     }
 
-    private function updateTotals(Get $get, Set $set){
-        $items = $get('../../items');
+    private function updateTotals(Get $get, Set $set, string $basePath = '../../'){
+        $items = $get($basePath . 'items');
         
         $packages = 0;
         $totalWeight = 0.0;
@@ -230,9 +235,9 @@ class ManagePurchaseOrders extends ManageRelatedRecords
             $total += $item['price'];
         }
 
-        $set('../../packages', $packages);
-        $set('../../weight', $totalWeight);
-        $set('../../total', $total);
+        $set($basePath . 'packages', $packages);
+        $set($basePath . 'weight', $totalWeight);
+        $set($basePath . 'total', $total);
     }
 
     public function table(Table $table): Table
