@@ -92,7 +92,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                     ->hintAction(
                         Action::make('newProduct')
                             ->translateLabel()
-                            ->icon('heroicon-o-plus')
+                            ->button()
                             ->form([
                                 Grid::make('Datos')
                                     ->columns(6)
