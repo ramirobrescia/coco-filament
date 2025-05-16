@@ -28,21 +28,21 @@ return [
         ],
     ],
     'report' => [
-        'provider' => [
-            'action' => [
-                'label' => 'Pedido al proveedor',
-                'description' => 'Resumen de la compra para enviar al proveedor.'
-            ],
-            'failure' => [
-                'selection' => [
-                    'title' => 'Pedido al proveedor',
-                    'body' => 'Debe seleccionar solo una compra.'
-                ]    
-            ]
+        'action' => [
+            'label' => 'Pedido al proveedor',
+            'description' => 'Resumen de la compra para enviar al proveedor.'
         ],
-        'consumers' => [
-            'label' => 'Pedidos de consumidores',
-            'description' => 'El pedido proveedor y el de cada consumidor'
+        'failure' => [
+            'selection' => [
+                'title' => 'Pedido al proveedor',
+                'body' => 'Debe seleccionar solo una compra.'
+            ]    
+        ],
+        'orders' => [
+            'action' => [
+                'label' => 'Pedidos de consumidores',
+                'description' => 'El pedido proveedor y el de cada consumidor'
+            ]
         ],
     ]
 ];

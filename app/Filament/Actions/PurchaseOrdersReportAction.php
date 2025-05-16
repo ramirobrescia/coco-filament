@@ -6,7 +6,7 @@ use App\Models\Purchase;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\CanCustomizeProcess;
 
-class PurchaseReportAction extends Action
+class PurchaseOrdersReportAction extends Action
 {
     use CanCustomizeProcess;
 
@@ -19,10 +19,10 @@ class PurchaseReportAction extends Action
     {
         parent::setUp();
 
-        $this->label(__('purchase.report.action.label'));
+        $this->label(__('purchase.report.orders.action.label'));
         
         $this->icon('heroicon-o-document-text');
 
-        $this->url(fn (Purchase $record) => route('report.purchase', ['id' => $record->id], true));
+        $this->url(fn (Purchase $record) => route('report.purchase.orders', ['id' => $record->id], true));
     }
 }

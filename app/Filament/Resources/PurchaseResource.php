@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\PurchaseOrdersReportAction;
 use App\Filament\Actions\PurchaseReportAction;
 use App\Filament\Resources\PurchaseResource\Pages;
 use App\Models\Purchase;
@@ -114,6 +115,7 @@ class PurchaseResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     PurchaseReportAction::make(),
+                    PurchaseOrdersReportAction::make(),
                     Tables\Actions\EditAction::make(),
                 ])->iconButton()
             ])

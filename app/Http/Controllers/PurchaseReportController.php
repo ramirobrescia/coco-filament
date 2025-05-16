@@ -35,14 +35,15 @@ class PurchaseReportController extends Controller
                     'quantity' => 0.0,
                     'total' => 0.0,
                 ];
-
+                
                 foreach ($productItems as $item) {
                     $product['quantity'] += $item->quantity;
                     $product['total'] += $item->price;
                 }
 
                 return $product;
-            });
+            })
+            ->sortBy('name');
 
         $data = [
             'purchase' => $purchase,
@@ -84,7 +85,7 @@ class PurchaseReportController extends Controller
 
         // <provider> purchase <node> <date>
         $filename = Str::of('? ? ? ?')
-            ->replaceArray('?', [$purchase->provider->name, __('Purchase'), $purchase->node->name, date('Y-m-d')])
+            ->replaceArray('?', [$purchase->provider->name, __('orders'), $purchase->node->name, date('Y-m-d')])
             ->slug();
         
         $pdf = Pdf::loadView('reports.purchase.orders', $data);
