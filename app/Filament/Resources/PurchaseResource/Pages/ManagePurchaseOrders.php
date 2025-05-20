@@ -85,7 +85,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                 Placeholder::make('provider')
                     ->translateLabel()
                     ->content($this->record->provider()->get()->first()->name),
-                Repeater::make('items')
+                Repeater::make('itemsByName')
                     ->relationship()
                     ->columns(12)
                     ->columnSpanFull()

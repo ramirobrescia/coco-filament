@@ -42,4 +42,14 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Get the items of the order, ordered by product name.
+     */
+    public function itemsByName(): HasMany
+    {
+        return $this->items()
+            ->join('products', 'order_item.product_id', '=', 'products.id')
+            ->orderBy('products.name');
+    }
 }
