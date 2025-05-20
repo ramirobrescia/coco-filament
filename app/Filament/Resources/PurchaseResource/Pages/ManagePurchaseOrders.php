@@ -248,6 +248,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(__('Consumer'))
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('packages')
                     ->translateLabel(),
