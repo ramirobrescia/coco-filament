@@ -125,8 +125,9 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                                     ]),
                             ])
                             ->action(function (array $data) use ($form): void {
-                                $order = $form->getRecord();
-                                $data['provider_id'] = $order->purchase()->first()->provider_id;
+                                $purchase = $this->getOwnerRecord();
+
+                                $data['provider_id'] = $purchase->provider_id;
 
                                 $newProduct = Product::create($data);
 
