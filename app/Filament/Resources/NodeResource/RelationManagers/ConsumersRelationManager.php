@@ -34,7 +34,9 @@ class ConsumersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->defaultSort('name', 'asc')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->sortable(),
             ])
             ->filters([
                 //
