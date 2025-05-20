@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PurchaseResource\Pages;
 
+use App\Filament\Actions\UpdatePurchaseOrdersItemPrices;
 use App\Filament\Resources\PurchaseResource;
 use App\Models\Product;
 use Filament\Forms\Components\Actions\Action;
@@ -149,7 +150,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                             $this->updateTotals($get, $set, '');
                         });
                     })
-                    ->schema([
+                    ->schema([  
                         Select::make('product_id')
                             ->hiddenLabel()
                             ->placeholder(__('Product'))
@@ -267,6 +268,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
+                UpdatePurchaseOrdersItemPrices::make()
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
