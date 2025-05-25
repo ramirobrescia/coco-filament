@@ -18,4 +18,11 @@ class EditPurchase extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    public function getFooterWidgets(): array
+    {
+        return [
+            PurchaseResource\Widgets\PurchaseSummaryWidget::class,
+        ];
+    }
 }
