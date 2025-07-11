@@ -32,9 +32,33 @@ class AdminPanelProvider extends PanelProvider
                 'amber' => Color::Amber,
                 'lime' => Color::Lime,
                 'orange' => Color::Orange,
-                'primary' => Color::Amber,
+                // 'primary' => Color::Amber,
                 'sky' => Color::Sky,
                 'yellow' => Color::Yellow,
+                // 'primary' => '#2B50A1',
+                // 'danger' => '#FF7043',
+                // 'success' => '#4CAF50',
+                // 'warning' => '#FFD04D',
+                // 'gray' => '#FDF4E5',
+
+                'primary' => '#2B50A1',
+                'secondary' => '#FFD04D',
+                'success' => '#4CAF50',
+                'warning' => '#FF7043',
+                'background' => '#E9DFC9',
+                'surface' => '#FFFFFF',
+                'foreground' => '#2B2B2B',
+                'border' => '#B8AD9C',
+
+                'dark' => [
+                    'primary' => '#90B4F6',
+                    'secondary' => '#FFDD7F',
+                    'success' => '#81C784',
+                    'warning' => '#FFAB91',
+                    'background' => '#1F2937',
+                    'foreground' => '#F3F4F6',
+                    'border' => '#374151',
+                ]
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -56,7 +80,8 @@ class AdminPanelProvider extends PanelProvider
                         ->allowExport()
                         ->allowImport(),
                 \Filament\SpatieLaravelTranslatablePlugin::make()->defaultLocales(['es', 'en']),
-                \TomatoPHP\FilamentMenus\FilamentMenusPlugin::make()
+                \TomatoPHP\FilamentMenus\FilamentMenusPlugin::make(),
+                \Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin::make()
             ])
             ->middleware([
                 EncryptCookies::class,
