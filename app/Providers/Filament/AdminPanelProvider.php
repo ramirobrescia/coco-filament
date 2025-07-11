@@ -55,7 +55,6 @@ class AdminPanelProvider extends PanelProvider
                         ->defaultLocales(['es', 'en'])
                         ->allowExport()
                         ->allowImport(),
-                \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
                 \Filament\SpatieLaravelTranslatablePlugin::make()->defaultLocales(['es', 'en']),
                 \TomatoPHP\FilamentMenus\FilamentMenusPlugin::make()
             ])
