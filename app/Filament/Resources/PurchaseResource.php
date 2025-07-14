@@ -21,6 +21,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseResource extends Resource
 {
@@ -42,10 +43,10 @@ class PurchaseResource extends Resource
                     ->relationship('node', 'name', function (Builder $query) {
                         $query
                             // Current user as Node creator
-                            ->where('user_id', '=', auth()->id())
+                            ->where('user_id', '=', Auth::id())
                             // Or current user as Node consumer
                             ->orWhereHas('consumers', function (Builder $query) {
-                                $query->where('user_id', '=', auth()->id());
+                                $query->where('user_id', '=', Auth::id());
                             });
                     })
                     ->live()
@@ -132,10 +133,10 @@ class PurchaseResource extends Resource
                     ->whereHas('node', function (Builder $query) {
                         $query
                             // Current user as Node creator
-                            ->where('user_id', '=', auth()->id())
+                            ->where('user_id', '=', Auth::id())
                             // Or current user as Node consumer
                             ->orWhereHas('consumers', function (Builder $query) {
-                                $query->where('user_id', '=', auth()->id());
+                                $query->where('user_id', '=', Auth::id());
                             });
                     })
             );

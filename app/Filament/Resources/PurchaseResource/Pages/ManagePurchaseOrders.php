@@ -23,6 +23,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 
 class ManagePurchaseOrders extends ManageRelatedRecords
@@ -80,7 +81,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                                 ->where('node_user.node_id', '=', $node->id);
                         });
                     })
-                    ->default(auth()->id())
+                    ->default(Auth::id())
                     ->preload()
                     ->searchable(),
                 Placeholder::make('provider')

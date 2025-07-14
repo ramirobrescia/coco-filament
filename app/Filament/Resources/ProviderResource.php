@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class ProviderResource extends Resource
 {
@@ -47,7 +48,7 @@ class ProviderResource extends Resource
                 Forms\Components\Select::make('node_id')
                     ->label('Nodo')
                     ->relationship('node', 'name', function (Builder $query){
-                        $userId = auth()->id();
+                        $userId = Auth::id();
                         $query
                             // Current user as Node creator
                             ->where('user_id', '=', $userId)
@@ -117,10 +118,10 @@ class ProviderResource extends Resource
                 $query->whereHas('node', function (Builder $query) {
                     $query
                         // Current user as Node creator
-                        ->where('user_id', '=', auth()->id())
+                        ->where('user_id', '=', Auth::id())
                         // Or current user as Node consumer
                         ->orWhereHas('consumers', function (Builder $query) {
-                            $query->where('user_id', '=', auth()->id());
+                            $query->where('user_id', '=', Auth::id());
                         });
                 })
             );

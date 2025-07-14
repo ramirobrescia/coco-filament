@@ -6,6 +6,7 @@ use App\Filament\Resources\NodeResource;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class CreateNode extends CreateRecord
 {
@@ -13,7 +14,7 @@ class CreateNode extends CreateRecord
 
     // protected function mutateFormDataBeforeCreate(array $data): array
     // {
-    //     $data['user_id'] = auth()->id();
+    //     $data['user_id'] = Auth::id();
     
     //     return $data;
     // }
@@ -26,7 +27,7 @@ class CreateNode extends CreateRecord
         $record = new ($this->getModel())($data);
 
         // Set the creator
-        $record->user()->associate(auth()->id());
+        $record->user()->associate(Auth::id());
 
         if (
             static::getResource()::isScopedToTenant() &&
@@ -38,7 +39,7 @@ class CreateNode extends CreateRecord
         $record->save();
 
         // Add the creator as consumer
-        $record->consumers()->attach(auth()->id());
+        $record->consumers()->attach(Auth::id());
 
         return $record;
     }

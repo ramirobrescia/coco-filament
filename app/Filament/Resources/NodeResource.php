@@ -23,6 +23,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use NodeInviteAction as GlobalNodeInviteAction;
 
 class NodeResource extends Resource
@@ -46,7 +47,7 @@ class NodeResource extends Resource
                     ->maxLength(50),
                 Placeholder::make('creator')
                     ->translateLabel()
-                    ->content(auth()->user()->name),
+                    ->content(Auth::user()->name),
             ]);
     }
 
@@ -77,10 +78,10 @@ class NodeResource extends Resource
             ->modifyQueryUsing(fn (Builder $query) => 
                 $query
                     // Current user as Node creator
-                    ->where('user_id', '=', auth()->id())
+                    ->where('user_id', '=', Auth::id())
                     // Current user as Node consumer
                     ->orWhereHas('consumers', function (Builder $query) {
-                        $query->where('user_id', '=', auth()->id());
+                        $query->where('user_id', '=', Auth::id());
                     })
             )
             ->bulkActions([
