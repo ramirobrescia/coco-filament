@@ -19,7 +19,6 @@ class User extends Authenticatable
     
     /** spatie/laravel-permission */
     use HasRoles;
-    use HasSuperAdmin;
 
     /**
      * The attributes that are mass assignable.

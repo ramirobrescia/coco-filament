@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -11,6 +12,8 @@ use GeneralSiteSettings;
 
 class ManageSiteSettings extends SettingsPage
 {
+    use HasPageShield;
+
     protected static ?string $navigationGroup = 'Ajustes';
 
     protected static ?string $navigationLabel = 'Sitio';

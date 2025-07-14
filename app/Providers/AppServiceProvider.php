@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use TomatoPHP\FilamentCms\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
         });
+
+        // Third-party policies
+        Gate::policy(\TomatoPHP\FilamentCms\Models\Category::class, \App\Policies\CategoryPolicy::class);
+        Gate::policy(\TomatoPHP\FilamentCms\Models\Post::class, \App\Policies\PostPolicy::class);
+        Gate::policy(\TomatoPHP\FilamentMenus\Models\Menu::class, \App\Policies\MenuPolicy::class);
     }
 }

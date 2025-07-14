@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use BlogSettings;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
@@ -11,6 +12,8 @@ use Filament\Pages\SettingsPage;
 
 class ManageBlogSettings extends SettingsPage
 {
+    use HasPageShield;
+
     protected static ?string $navigationGroup = 'Ajustes';
 
     protected static ?string $navigationLabel = 'Blog';
