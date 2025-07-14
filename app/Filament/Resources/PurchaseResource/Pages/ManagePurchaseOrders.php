@@ -90,6 +90,7 @@ class ManagePurchaseOrders extends ManageRelatedRecords
                     ->relationship()
                     ->columns(12)
                     ->columnSpanFull()
+                    ->extraAttributes(['class' => 'compact'])
                     ->hintAction(
                         Action::make('newProduct')
                             ->translateLabel()

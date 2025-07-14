@@ -9,6 +9,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class NodeInviteAction extends Action
@@ -29,20 +30,16 @@ class NodeInviteAction extends Action
             Repeater::make('consumers')
                 ->translateLabel()
                 ->schema([
-                    Grid::make()
-                        ->columns(2)
-                        ->schema([
-                            TextInput::make('name')
-                                ->translateLabel()
-                                ->alpha()
-                                ->maxLength(50)
-                                ->required(),
-                            TextInput::make('email')
-                                ->translateLabel()
-                                ->email()
-                                ->required()
-                        ])
+                    TextInput::make('name')
+                        ->translateLabel()
+                        ->maxLength(50)
+                        ->required(),
+                    TextInput::make('email')
+                        ->translateLabel()
+                        ->email()
+                        ->required()
                 ])
+                ->columns(2)
         ]);
 
         $this->action(function (array $data, Action $action) {
@@ -51,7 +48,7 @@ class NodeInviteAction extends Action
             $invitation = Invitation::create([
                 'consumers' => $data['consumers'],
                 'node_id' => $node->id,
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
             ]);
 
             // Create emails
